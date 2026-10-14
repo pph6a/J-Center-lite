@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SignPath artifact configuration for the self-contained win-x64 package.
+
+  Only files built from this repository are signed. Upstream / System Libraries
+  bundled by the .NET SDK and Windows App SDK (Microsoft.*.dll, WinUI, adb, ...)
+  are deliberately left untouched.
+-->
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+  <zip-file>
+    <pe-file path="JCenterLite.exe">
+      <authenticode-sign/>
+    </pe-file>
+    <pe-file path="JCenterLite.Core.dll">
+      <authenticode-sign/>
+    </pe-file>
+  </zip-file>
+</artifact-configuration>

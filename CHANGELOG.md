@@ -21,6 +21,7 @@
 - README 新增作者自述与界面截图（`docs/images/`：副屏显示、硬件监控、主题编辑器、设置），截图使用演示主题库、不含厂商素材。
 - 发布链路：`tools/build-release.ps1`（自包含 win-x64 打包 + SHA256）、`.github/workflows/release.yml`（打 `v*` tag 自动创建 Release）、工程统一版本号 `1.0.0`。
 - README 新增“下载与安装”；设备文档补充京东型号链接。
+- 代码签名准备：`build/signpath/artifact-configuration.xml`（只签自研的 `JCenterLite.exe` 与 `JCenterLite.Core.dll`）、`.github/workflows/sign-release.yml`（SignPath 签名工作流，未配置变量时自动跳过），以及申请与配置指南 `docs/signing.md`。
 - 未处理异常（UI 线程、后台线程、未观察任务）写入 `%LOCALAPPDATA%\JCenterLite\logs\crash.log`；UI 线程异常不再直接关闭窗口。
 
 ### Known limitations

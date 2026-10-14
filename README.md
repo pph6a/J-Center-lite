@@ -36,6 +36,8 @@ J-Center-Lite is an independent WinUI 3 reimplementation of the SEGOTEP / horiem
 
 > 首次连接时，如果原厂 J-Center 正在运行，应用会弹窗询问是否接管副屏（固件只允许一个控制连接）。
 
+> 代码签名：本项目正在申请 [SignPath Foundation](https://signpath.org/) 的免费开源签名，流程与配置见 [docs/signing.md](docs/signing.md)。
+
 ## 能做什么
 
 - **硬件监控**：CPU/GPU 温度、占用、频率、功耗，内存、系统盘、网络上下行、风扇/水泵转速（LibreHardwareMonitor 驱动传感器）。

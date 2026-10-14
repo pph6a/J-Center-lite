@@ -1,0 +1,75 @@
+name: sign-release
+
+# Signs an existing release package with the SignPath Foundation certificate.
+# Until the repository variables/secrets described in docs/signing.md are set,
+# the job is skipped instead of failing.
+#
+# Manual run:  Actions → sign-release → Run workflow → enter the release tag.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing release tag to sign (for example v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  sign:
+    if: vars.SIGNPATH_ORGANIZATION_ID != ''
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build the unsigned package
+        shell: pwsh
+        run: |
+          $version = "${{ inputs.tag }}".TrimStart('v')
+          ./tools/build-release.ps1 -Version $version
+
+      - name: Upload the artifact that will be signed
+        id: upload-unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-package
+          path: dist/J-Center-Lite-*-win-x64.zip
+          if-no-files-found: error
+
+      - name: Submit the SignPath signing request
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ vars.SIGNPATH_SIGNING_POLICY_SLUG }}
+          artifact-configuration-slug: ${{ vars.SIGNPATH_ARTIFACT_CONFIGURATION_SLUG }}
+          github-artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 900
+          output-artifact-directory: dist/signed
+          skip-decompress: true
+
+      - name: Replace the release assets with the signed package
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $tag = "${{ inputs.tag }}"
+          $zip = Get-ChildItem dist/signed -Recurse -Filter *.zip | Select-Object -First 1
+          if (-not $zip) { throw 'signed package not found in dist/signed' }
+
+          $hash = (Get-FileHash -LiteralPath $zip.FullName -Algorithm SHA256).Hash
+          "$hash  $($zip.Name)" | Set-Content -LiteralPath "$($zip.FullName).sha256" -Encoding ASCII
+
+          gh release upload $tag $zip.FullName "$($zip.FullName).sha256" --clobber
+          gh release view $tag --json assets --jq '.assets[] | "\(.name)  \(.size) bytes"'

@@ -9,6 +9,7 @@
 | 可见性 | **private**（要公开时再执行本文最后一节） |
 | CI | `.github/workflows/ci.yml` — Windows runner：还原 → 构建 → 单测 → 发布并上传 artifact |
 | Release | `.github/workflows/release.yml` — 打 `v*` tag 时自动打包并创建 Release |
+| 签名 | `.github/workflows/sign-release.yml` — 审批后在 Actions 里手动触发，用 SignPath Foundation 证书签名 Release 产物（见 [signing.md](signing.md)） |
 
 ## 发布一个新版本
 
