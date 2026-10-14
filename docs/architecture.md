@@ -21,6 +21,7 @@ WinUI 3 App (src/JCenterLite.App)
 2. `DashboardViewModel` 启动 `TelemetryPump`；Pump 每 100 ms 调 `HardwareMonitorService.BuildTelemetry()`，`JCenterTelemetryCodec.Build()` 生成 78B 帧，发送到设备。
 3. `DisplayViewModel`/`ThemeEditorViewModel` 生成亮度、播放模式、媒体、主题帧；背景媒体先由 `AdbCli.PushAsync` 推到 `/sdcard/`。
 4. `SettingsService`/`ThemeStore` 保存 JSON 到 `%LOCALAPPDATA%\JCenterLite\`。
+5. `DisplayPage`（默认首页）用 `ThemeCanvas` + `DisplayViewModel.ValueFor` 秒级渲染 480×480 实时画面；主题墙项点击直接调用 `ApplyThemeAsync` 推送到设备。
 
 ## 扩展点
 

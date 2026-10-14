@@ -8,6 +8,7 @@ J-Center-Lite is an independent WinUI 3 reimplementation of the SEGOTEP / horiem
 
 - **硬件监控**：CPU/GPU 温度、占用、频率、功耗，内存、系统盘、网络上下行、风扇/水泵转速（LibreHardwareMonitor 驱动传感器）。
 - **副屏推送**：每 100 ms 把传感器数据推送到 480×480 屏幕（含 CPU/GPU/内存/硬盘/网络/风扇等 34 个字段）。
+- **副屏显示页（默认首页）**：左侧 480×480 实时画面（背景媒体 + 真实传感器数值，秒级刷新），右侧缩略图主题墙，单击缩略图即切换副屏主题。
 - **屏幕控制**：亮度、循环/随机/关闭播放、开关屏、重启副屏、查询终端版本。
 - **主题系统**：导入 PNG/JPG/GIF/MP4/WebM 背景；可视化 480×480 主题编辑器（时间/日期/温度/占用/内存/硬盘/网络等元素，可拖拽、旋转、缩放、改色、改字号）；一键推送到设备。
 - **托盘与开机**：最小化/关闭到托盘、开机自启。
@@ -21,6 +22,7 @@ J-Center-Lite is an independent WinUI 3 reimplementation of the SEGOTEP / horiem
 2. 准备 `adb.exe`（Android platform-tools）。J-Center-Lite **不捆绑** adb；在“设置 → adb.exe 路径”中选择即可。
 3. 用管理员身份运行 J-Center-Lite（LibreHardwareMonitor 读取 MSR/SuperIO 通常需要管理员权限；普通权限下仍可使用内存、磁盘、网络与部分 GPU 传感器）。
 4. 连接 QiaoSiBo 屏幕模组，点击“连接设备”。设备出现后，点击“开始推送到副屏”。
+5. 想把应用放进开始菜单（可选）：`powershell -ExecutionPolicy Bypass -File .\tools\install-start-menu-shortcut.ps1 -Pin`。
 
 > 副屏固件只接受一个控制连接。若原 J-Center 仍在运行，点击“连接设备”后会弹出“需要接管副屏”对话框；确认后 J-Center-Lite 会结束原 `WFanManager.exe` 并接管。若不想接管，请先手动退出原程序。
 
@@ -46,6 +48,7 @@ J-Center-Lite/
 ├─ src/JCenterLite.App/          # WinUI 3 桌面应用（MainWindow / Pages / ViewModels / Tray）
 ├─ src/JCenterLite.Core/         # 协议、ADB、传感器、主题、设置、更新（无 UI 依赖）
 ├─ tests/JCenterLite.Core.Tests/ # xUnit 协议与模型测试
+├─ tools/                        # 主题迁移 CLI、开始菜单快捷方式脚本
 ├─ docs/                         # 架构、构建、发布、合规、逆向协议文档
 └─ .github/workflows/ci.yml      # Windows CI：还原 + 构建 + 测试 + 发布产物
 ```
@@ -75,7 +78,7 @@ dotnet run --project tools/JCenterThemeMigrator/JCenterThemeMigrator.csproj -c R
 
 ## 当前边界
 
-- **单实例**、**默认主题预览图**、**云端主题下载**、**完整中英双语 UI**、**图片裁剪 UI** 尚未实现；见 [docs/feature-matrix.md](docs/feature-matrix.md)。
+- **单实例**、**云端主题下载**、**完整中英双语 UI**、**图片裁剪 UI** 尚未实现；见 [docs/feature-matrix.md](docs/feature-matrix.md)。
 - 原程序并未提供风扇占空比控制界面；本项目同样以监控/推送为主，不写 EC 寄存器、不绕过硬件保护。
 - 不附带内核驱动；需要完整传感器时请让 LibreHardwareMonitor 安装其签名驱动，并以管理员运行。
 
