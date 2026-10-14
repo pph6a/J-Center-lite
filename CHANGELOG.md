@@ -18,6 +18,7 @@
 - `tools/install-start-menu-shortcut.ps1`：注册开始菜单快捷方式，可顺带请求固定到“开始”屏幕。
 - 主题编辑器重做：元素列表显示中文类型名、颜色条与文本预览；属性面板实时联动（类型可改、可直接填 X/Y、上移/下移/复制元素）；主题可复制、删除带确认、背景可清除。
 - `docs/device-support.md`：JONSBO TF2-360SC 实测支持矩阵、固件限制说明与测试机配置。
+- README 新增作者自述与界面截图（`docs/images/`：副屏显示、硬件监控、主题编辑器、设置），截图使用演示主题库、不含厂商素材。
 - 未处理异常（UI 线程、后台线程、未观察任务）写入 `%LOCALAPPDATA%\JCenterLite\logs\crash.log`；UI 线程异常不再直接关闭窗口。
 
 ### Known limitations

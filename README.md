@@ -4,6 +4,28 @@ J-Center-Lite is an independent WinUI 3 reimplementation of the SEGOTEP / horiem
 
 > 独立实现、不附带厂商二进制。原程序只用于行为与协议研究；仓库不包含原程序的代码、驱动、字体、图片、视频或固件。
 
+## 作者自述
+
+> 我是自己嫌那个驱动不太好用，重构了一下。
+
+> *"I rebuilt it myself because I didn't like how the vendor driver worked."*
+
+原厂 J-Center 能干活，但界面和交互都不太顺手——多主题、自定义媒体、位置微调这些每天都要用的东西，用起来很别扭。所以我按这块 480×480 屏幕自己的协议重新实现了一版：
+不捆绑厂商二进制、不装额外驱动，用 ADB 直接接管屏幕；主题、媒体、传感器推送全部走本地，数据落在 `%LOCALAPPDATA%\JCenterLite`。
+我实际用的设备是 **乔思伯 JONSBO TF2-360SC(WI)** 一体式水冷（480×480 IPS 屏，屏内 QiaoSiBo 模组），完整实测支持矩阵、固件限制和测试机配置见 [docs/device-support.md](docs/device-support.md)。
+
+## 界面截图
+
+| 副屏显示（默认首页） | 硬件监控 |
+|---|---|
+| ![副屏显示](docs/images/display.png) | ![硬件监控](docs/images/dashboard.png) |
+
+| 主题编辑器 | 设置 |
+|---|---|
+| ![主题编辑器](docs/images/editor.png) | ![设置](docs/images/settings.png) |
+
+> 截图为演示主题库（应用内置的示例主题），不包含任何厂商素材或用户自备的媒体文件。
+
 ## 能做什么
 
 - **硬件监控**：CPU/GPU 温度、占用、频率、功耗，内存、系统盘、网络上下行、风扇/水泵转速（LibreHardwareMonitor 驱动传感器）。

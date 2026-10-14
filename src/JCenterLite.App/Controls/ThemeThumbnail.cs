@@ -54,6 +54,8 @@ public sealed class ThemeThumbnail : Grid
         _textPreview = new TextBlock
         {
             Text = "Aa",
+            TextWrapping = TextWrapping.NoWrap,
+            TextTrimming = TextTrimming.CharacterEllipsis,
             FontSize = DefaultSize * 0.3,
             FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
             Foreground = new SolidColorBrush(Colors.White),
@@ -187,6 +189,7 @@ public sealed class ThemeThumbnail : Grid
         {
             _placeholder.FontSize = Math.Max(10, edge * 0.38);
             _textPreview.FontSize = Math.Max(9, edge * 0.3);
+            _textPreview.MaxWidth = Math.Max(24, edge - 8);
         }
     }
 
