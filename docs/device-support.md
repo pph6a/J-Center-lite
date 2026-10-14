@@ -14,7 +14,7 @@
 | 项目 | 内容 |
 |---|---|
 | 商品 | **乔思伯（JONSBO）TF2-360SC(WI) 白色 一体式水冷散热器** |
-| 商品页关键规格 | 魔法拼接风扇 / 铝合金冷头 / **IPS 液晶屏** / 软管 |
+| 商品页关键规格 | 魔术拼接风扇 / 铝合金冷头 / **IPS 液晶屏** / 软管 |
 | 屏幕 | 480 × 480 IPS，屏内是 Android，可通过 ADB 访问 |
 | ADB 设备标识 | `HRBDFUN` — `product:full_bd09circle_qsb`，`model:QiaoSiBo`，`device:bd09circle_qsb` |
 | 控制通道 | `adb forward tcp:<本地端口> tcp:22222`，屏侧私有 TCP 协议（帧格式见 [reverse-engineering/protocol.md](reverse-engineering/protocol.md)） |
