@@ -59,7 +59,9 @@ public sealed partial class DisplayPage : Page
 
     private void OnPreviewTimerTick(object? sender, object e) => _ = ViewModel.RefreshPreviewAsync();
 
-    private void OnPreviewUpdated(object? sender, EventArgs e) => Preview.Refresh();
+    // Live values only repaint the text; rebuilding the media pipeline on every tick is
+    // both wasteful and a crash risk while a video background is playing.
+    private void OnPreviewUpdated(object? sender, EventArgs e) => Preview.RefreshValues();
 
     private void OnShellStatusChanged(object? sender, DeviceStatus status) => UpdatePreviewStatus(status);
 

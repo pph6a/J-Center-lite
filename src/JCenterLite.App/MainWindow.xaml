@@ -21,7 +21,7 @@
             </StackPanel>
         </Grid>
 
-        <NavigationView x:Name="Nav" Grid.Row="1" IsBackButtonVisible="Collapsed" IsPaneOpen="True" IsSettingsVisible="False" PaneDisplayMode="Left" SelectionChanged="Nav_SelectionChanged">
+        <NavigationView x:Name="Nav" Grid.Row="1" IsBackButtonVisible="Collapsed" IsPaneOpen="True" IsSettingsVisible="False" OpenPaneLength="248" PaneDisplayMode="Left" SelectionChanged="Nav_SelectionChanged">
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="屏幕显示" Tag="display">
                     <NavigationViewItem.Icon><SymbolIcon Symbol="Slideshow" /></NavigationViewItem.Icon>

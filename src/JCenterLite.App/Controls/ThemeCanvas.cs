@@ -29,6 +29,7 @@ public sealed class ThemeCanvas : Canvas
     private double _startX;
     private double _startY;
     private MediaPlayer? _backgroundPlayer;
+    private MediaPlayerElement? _backgroundElement;
 
     public ThemeDefinition? Theme
     {
@@ -54,8 +55,10 @@ public sealed class ThemeCanvas : Canvas
 
     public void Refresh()
     {
-        ReleaseBackgroundPlayer();
+        // Detach everything first: disposing a player while its MediaPlayerElement is
+        // still in the tree is what used to take the process down on theme switches.
         Children.Clear();
+        DisposeBackgroundPlayer();
         SelectedElement = null;
         if (Theme is null)
         {
@@ -95,25 +98,61 @@ public sealed class ThemeCanvas : Canvas
     }
 
     /// <summary>Stops and releases the looping background player, if one is active.</summary>
+    /// <summary>
+    /// Repaints element text only. Live sensor updates use this so the media pipeline is
+    /// never rebuilt on a timer.
+    /// </summary>
+    public void RefreshValues()
+    {
+        foreach (var child in Children)
+        {
+            if (child is Border host && host.Tag is ThemeElementModel element && host.Child is TextBlock text)
+            {
+                text.Text = FormatElementText(element);
+            }
+        }
+    }
+
+    /// <summary>Detaches the canvas content and stops the background media pipeline.</summary>
     public void ReleaseBackgroundPlayer()
     {
-        if (_backgroundPlayer is null)
+        Children.Clear();
+        DisposeBackgroundPlayer();
+    }
+
+    private void DisposeBackgroundPlayer()
+    {
+        var element = _backgroundElement;
+        _backgroundElement = null;
+        if (element is not null)
+        {
+            try
+            {
+                element.SetMediaPlayer(null);
+            }
+            catch
+            {
+                // Older shells reject a null player; the element is discarded anyway.
+            }
+        }
+
+        var player = _backgroundPlayer;
+        _backgroundPlayer = null;
+        if (player is null)
         {
             return;
         }
 
         try
         {
-            _backgroundPlayer.Pause();
-            _backgroundPlayer.Source = null;
-            _backgroundPlayer.Dispose();
+            player.Pause();
+            player.Source = null;
+            player.Dispose();
         }
         catch
         {
             // Playback teardown is best effort; it must never break the preview.
         }
-
-        _backgroundPlayer = null;
     }
 
     /// <summary>Draws the theme background media underneath the sensor elements.</summary>
@@ -147,6 +186,7 @@ public sealed class ThemeCanvas : Canvas
             element.SetMediaPlayer(player);
 
             _backgroundPlayer = player;
+            _backgroundElement = element;
             Children.Add(element);
             player.Play();
             return;

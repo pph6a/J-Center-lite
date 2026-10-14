@@ -221,6 +221,7 @@ public sealed partial class DisplayViewModel : ObservableObject
             return;
         }
 
+        StatusMessage = $"正在应用：{theme.Name}…";
         try
         {
             var backgroundName = string.Empty;

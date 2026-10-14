@@ -9,51 +9,56 @@
         <converters:ThemeSummaryConverter x:Key="ThemeSummary" />
     </Page.Resources>
 
-    <Grid Padding="24" ColumnSpacing="20">
+    <Grid Padding="16" ColumnSpacing="16">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Disabled">
-            <StackPanel Width="500" Spacing="12">
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="副屏显示" />
-                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" Text="按副屏 480 × 480 画面实时渲染：背景媒体加本机传感器数值。" />
+        <!-- 480x480 live preview plus the compact device controls. -->
+        <StackPanel Grid.Column="0" Width="500" Spacing="12">
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="副屏显示" />
 
-                <Border Padding="8" Background="{StaticResource CardBackgroundBrush}" CornerRadius="8">
-                    <StackPanel Spacing="8">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <Ellipse x:Name="PreviewStatusDot" Width="8" Height="8" Fill="#F87171" VerticalAlignment="Center" />
-                            <TextBlock x:Name="PreviewStatusText" VerticalAlignment="Center" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="未连接" />
-                        </StackPanel>
-                        <Border BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8">
-                            <controls:ThemeCanvas x:Name="Preview" IsHitTestVisible="False" Theme="{x:Bind ViewModel.PreviewTheme, Mode=OneWay}" />
-                        </Border>
-                        <TextBlock FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind ViewModel.AppliedThemeName, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
+            <Border Padding="8" Background="{StaticResource CardBackgroundBrush}" CornerRadius="8">
+                <StackPanel Spacing="6">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Ellipse x:Name="PreviewStatusDot" Width="8" Height="8" Fill="#F87171" VerticalAlignment="Center" />
+                        <TextBlock x:Name="PreviewStatusText" VerticalAlignment="Center" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="未连接" />
+                        <TextBlock VerticalAlignment="Center" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind ViewModel.AppliedThemeName, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
                     </StackPanel>
-                </Border>
+                    <Border BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8">
+                        <controls:ThemeCanvas x:Name="Preview" IsHitTestVisible="False" Theme="{x:Bind ViewModel.PreviewTheme, Mode=OneWay}" />
+                    </Border>
+                </StackPanel>
+            </Border>
 
-                <Border Padding="16" Background="{StaticResource CardBackgroundBrush}" CornerRadius="8">
-                    <StackPanel Spacing="12">
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="亮度" />
-                        <Slider Maximum="100" Minimum="0" StepFrequency="1" Value="{x:Bind ViewModel.Brightness, Mode=TwoWay}" />
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <Button Command="{x:Bind ViewModel.SendBrightnessCommand}" Content="应用亮度" />
-                            <Button Command="{x:Bind ViewModel.ToggleScreenCommand}" Content="开 / 关屏幕" />
-                            <Button Click="RebootDevice_Click" Content="重启副屏" />
-                            <Button Command="{x:Bind ViewModel.QueryVersionCommand}" Content="查询终端版本" />
-                            <TextBlock VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind ViewModel.DeviceVersion, Mode=OneWay}" />
-                        </StackPanel>
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="播放模式" />
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <Button Command="{x:Bind ViewModel.SetLoopCommand}" Content="循环播放" />
-                            <Button Command="{x:Bind ViewModel.SetRandomCommand}" Content="随机播放" />
-                            <Button Command="{x:Bind ViewModel.SetOffCommand}" Content="关闭播放" />
-                        </StackPanel>
+            <Border Padding="12" Background="{StaticResource CardBackgroundBrush}" CornerRadius="8">
+                <StackPanel Spacing="8">
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock VerticalAlignment="Center" Text="亮度" />
+                        <Slider Grid.Column="1" Maximum="100" Minimum="0" StepFrequency="1" Value="{x:Bind ViewModel.Brightness, Mode=TwoWay}" VerticalAlignment="Center" />
+                        <Button Grid.Column="2" Command="{x:Bind ViewModel.SendBrightnessCommand}" Content="应用" />
+                    </Grid>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Command="{x:Bind ViewModel.ToggleScreenCommand}" Content="开 / 关屏幕" />
+                        <Button Click="RebootDevice_Click" Content="重启副屏" />
+                        <Button Command="{x:Bind ViewModel.QueryVersionCommand}" Content="查询版本" />
+                        <TextBlock VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind ViewModel.DeviceVersion, Mode=OneWay}" />
                     </StackPanel>
-                </Border>
-            </StackPanel>
-        </ScrollViewer>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock VerticalAlignment="Center" Text="播放" />
+                        <Button Command="{x:Bind ViewModel.SetLoopCommand}" Content="循环" />
+                        <Button Command="{x:Bind ViewModel.SetRandomCommand}" Content="随机" />
+                        <Button Command="{x:Bind ViewModel.SetOffCommand}" Content="关闭" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
 
         <Border Grid.Column="1" Padding="16" Background="{StaticResource CardBackgroundBrush}" CornerRadius="8">
             <Grid RowSpacing="12">
@@ -72,15 +77,23 @@
                     ItemsSource="{x:Bind ViewModel.Themes}"
                     SelectedItem="{x:Bind ViewModel.SelectedTheme, Mode=TwoWay}"
                     SelectionMode="Single">
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="MinWidth" Value="0" />
+                            <Setter Property="MinHeight" Value="0" />
+                        </Style>
+                    </GridView.ItemContainerStyle>
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <ItemsWrapGrid ItemHeight="188" ItemWidth="128" Orientation="Horizontal" />
+                            <ItemsWrapGrid ItemHeight="180" ItemWidth="120" Orientation="Horizontal" />
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="models:ThemeDefinition">
-                            <StackPanel Padding="6" Spacing="6" Width="116">
-                                <controls:ThemeThumbnail Width="112" Height="112" Theme="{x:Bind}" />
+                            <StackPanel Padding="4" Spacing="4" Width="112">
+                                <controls:ThemeThumbnail Width="104" Height="104" Theme="{x:Bind}" />
                                 <TextBlock FontSize="12" Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxLines="2" />
                                 <TextBlock FontSize="11" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Converter={StaticResource ThemeSummary}}" />
                             </StackPanel>
