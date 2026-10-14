@@ -70,7 +70,7 @@ public sealed partial class DisplayViewModel : ObservableObject
     private bool _screenOn = true;
 
     [ObservableProperty]
-    private string _statusMessage = "尚未连接设备";
+    private string _statusMessage = string.Empty;
 
     [ObservableProperty]
     private string _deviceVersion = "--";

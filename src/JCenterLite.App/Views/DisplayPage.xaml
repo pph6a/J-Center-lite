@@ -74,13 +74,13 @@
                     SelectionMode="Single">
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <ItemsWrapGrid ItemHeight="196" ItemWidth="140" Orientation="Horizontal" />
+                            <ItemsWrapGrid ItemHeight="188" ItemWidth="128" Orientation="Horizontal" />
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="models:ThemeDefinition">
-                            <StackPanel Padding="6" Spacing="6" Width="128">
-                                <controls:ThemeThumbnail Width="128" Height="128" Theme="{x:Bind}" />
+                            <StackPanel Padding="6" Spacing="6" Width="116">
+                                <controls:ThemeThumbnail Width="112" Height="112" Theme="{x:Bind}" />
                                 <TextBlock FontSize="12" Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxLines="2" />
                                 <TextBlock FontSize="11" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Converter={StaticResource ThemeSummary}}" />
                             </StackPanel>
