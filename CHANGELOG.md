@@ -19,6 +19,8 @@
 - 主题编辑器重做：元素列表显示中文类型名、颜色条与文本预览；属性面板实时联动（类型可改、可直接填 X/Y、上移/下移/复制元素）；主题可复制、删除带确认、背景可清除。
 - `docs/device-support.md`：JONSBO TF2-360SC 实测支持矩阵、固件限制说明与测试机配置。
 - README 新增作者自述与界面截图（`docs/images/`：副屏显示、硬件监控、主题编辑器、设置），截图使用演示主题库、不含厂商素材。
+- 发布链路：`tools/build-release.ps1`（自包含 win-x64 打包 + SHA256）、`.github/workflows/release.yml`（打 `v*` tag 自动创建 Release）、工程统一版本号 `1.0.0`。
+- README 新增“下载与安装”；设备文档补充京东型号链接。
 - 未处理异常（UI 线程、后台线程、未观察任务）写入 `%LOCALAPPDATA%\JCenterLite\logs\crash.log`；UI 线程异常不再直接关闭窗口。
 
 ### Known limitations

@@ -26,6 +26,16 @@ J-Center-Lite is an independent WinUI 3 reimplementation of the SEGOTEP / horiem
 
 > 截图为演示主题库（应用内置的示例主题），不包含任何厂商素材或用户自备的媒体文件。
 
+## 下载与安装
+
+- 到 [Releases](https://github.com/pph6a/J-Center-lite/releases) 下载 `J-Center-Lite-1.0.0-win-x64.zip`，解压到任意目录后双击 `JCenterLite.exe` 即可。
+  发布包是 **self-contained** 的：不需要预装 .NET 运行时，也不需要安装驱动或后台服务。
+- 需要自备 **`adb.exe`**（Android platform-tools）：首次运行在“设置 → adb.exe 路径”里选一下；也可以直接指定原 J-Center 目录里自带的那份。
+- 想让它出现在开始菜单：运行 `tools/install-start-menu-shortcut.ps1`。
+- 目标平台：**Windows 11 x64**（Windows 10 1809+ 保留兼容）；要读全 CPU 温度/功耗/风扇建议以管理员身份运行。
+
+> 首次连接时，如果原厂 J-Center 正在运行，应用会弹窗询问是否接管副屏（固件只允许一个控制连接）。
+
 ## 能做什么
 
 - **硬件监控**：CPU/GPU 温度、占用、频率、功耗，内存、系统盘、网络上下行、风扇/水泵转速（LibreHardwareMonitor 驱动传感器）。
@@ -61,7 +71,7 @@ dotnet test tests/JCenterLite.Core.Tests/JCenterLite.Core.Tests.csproj -c Releas
 dotnet publish src/JCenterLite.App/JCenterLite.App.csproj -c Release -r win-x64 -p:Platform=x64 -p:WindowsAppSDKSelfContained=true -p:WindowsPackageType=None -o dist/win-x64
 ```
 
-> 本机实测：`dotnet` 在 `C:\Users\7950X\.dotnet\dotnet.exe`（SDK 8.0.425），VS2022 Community 17.12.1；Windows App SDK 使用 NuGet 1.6.250602001。
+> 本机实测：.NET SDK 8.0.425（`%USERPROFILE%\.dotnet`），VS2022 Community 17.12.1；Windows App SDK 使用 NuGet 1.6.250602001。
 
 ## 项目结构
 
@@ -90,6 +100,7 @@ dotnet run --project tools/JCenterThemeMigrator/JCenterThemeMigrator.csproj -c R
 ## 设备支持
 
 本项目的实测设备是 **乔思伯 JONSBO TF2-360SC(WI)** 一体式水冷（480×480 IPS 屏，屏内 QiaoSiBo 模组），在 7950X / X670E-A / RTX 4060 Ti 平台上完成了完整实测。
+型号参考：[京东 · 乔思伯 TF2-360SC(WI)](https://item.jd.com/100077875551.html)（原商品页已下架，链接仅作型号对照）。
 支持矩阵、固件限制（比如为什么无法截屏回读画面）与测试机配置见 [docs/device-support.md](docs/device-support.md)。
 
 ## 与原程序的关系

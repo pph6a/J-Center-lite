@@ -3,7 +3,7 @@
 ## 环境
 
 - Windows 11 x64（也保留 ARM64 配置）。
-- .NET SDK 8.0（实测 8.0.425，位于 `C:\Users\7950X\.dotnet`）。
+- .NET SDK 8.0（实测 8.0.425；文档中的 `%USERPROFILE%\.dotnet` 按需替换成你自己的安装位置）。
 - Visual Studio 2022 17.12+（Windows App SDK C# 桌面工作负载）。
 - Windows App SDK NuGet `1.6.250602001`（项目已固定）。
 - 运行传感器需要管理员权限；`adb.exe` 需要用户自备。
