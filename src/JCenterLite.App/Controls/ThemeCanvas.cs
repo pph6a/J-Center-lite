@@ -30,6 +30,7 @@ public sealed class ThemeCanvas : Canvas
     private double _startY;
     private MediaPlayer? _backgroundPlayer;
     private MediaPlayerElement? _backgroundElement;
+    private readonly Dictionary<ThemeElementModel, Border> _elementHosts = new();
 
     public ThemeDefinition? Theme
     {
@@ -58,6 +59,7 @@ public sealed class ThemeCanvas : Canvas
         // Detach everything first: disposing a player while its MediaPlayerElement is
         // still in the tree is what used to take the process down on theme switches.
         Children.Clear();
+        _elementHosts.Clear();
         DisposeBackgroundPlayer();
         SelectedElement = null;
         if (Theme is null)
@@ -94,22 +96,44 @@ public sealed class ThemeCanvas : Canvas
             host.RenderTransformOrigin = new Point(0.5, 0.5);
             host.RenderTransform = new RotateTransform { Angle = element.Rotation };
             Children.Add(host);
+            SetZIndex(host, element.ZIndex + 1);
+            _elementHosts[element] = host;
         }
     }
 
-    /// <summary>Stops and releases the looping background player, if one is active.</summary>
     /// <summary>
-    /// Repaints element text only. Live sensor updates use this so the media pipeline is
-    /// never rebuilt on a timer.
+    /// Repaints the existing element hosts in place (text, size, colour, position, rotation,
+    /// z-order). Live sensor updates and editor edits use this so the media pipeline is never
+    /// restarted; a full rebuild only happens when the element set itself changed.
     /// </summary>
-    public void RefreshValues()
+    public void SyncElements()
     {
-        foreach (var child in Children)
+        if (Theme is null)
         {
-            if (child is Border host && host.Tag is ThemeElementModel element && host.Child is TextBlock text)
+            return;
+        }
+
+        var ordered = Theme.Elements.OrderBy(e => e.ZIndex).ToList();
+        if (_elementHosts.Count != Theme.Elements.Count || ordered.Any(element => !_elementHosts.ContainsKey(element)))
+        {
+            Refresh();
+            return;
+        }
+
+        foreach (var element in ordered)
+        {
+            var host = _elementHosts[element];
+            if (host.Child is TextBlock text)
             {
                 text.Text = FormatElementText(element);
+                text.FontSize = Math.Clamp(element.FontSize, 8, 160);
+                text.Foreground = ParseBrush(element.Color);
             }
+
+            SetLeft(host, element.X);
+            SetTop(host, element.Y);
+            host.RenderTransform = new RotateTransform { Angle = element.Rotation };
+            SetZIndex(host, element.ZIndex + 1);
         }
     }
 
@@ -188,6 +212,7 @@ public sealed class ThemeCanvas : Canvas
             _backgroundPlayer = player;
             _backgroundElement = element;
             Children.Add(element);
+            SetZIndex(element, 0);
             player.Play();
             return;
         }
@@ -201,6 +226,7 @@ public sealed class ThemeCanvas : Canvas
             Source = CreateBitmap(path),
         };
         Children.Add(image);
+        SetZIndex(image, 0);
     }
 
     private static BitmapImage CreateBitmap(string path)

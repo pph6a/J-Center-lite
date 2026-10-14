@@ -94,7 +94,7 @@
                         <DataTemplate x:DataType="models:ThemeDefinition">
                             <StackPanel Padding="4" Spacing="4" Width="112">
                                 <controls:ThemeThumbnail Width="104" Height="104" Theme="{x:Bind}" />
-                                <TextBlock FontSize="12" Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxLines="2" />
+                                <TextBlock FontSize="12" Text="{x:Bind Name, Mode=OneWay}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxLines="2" />
                                 <TextBlock FontSize="11" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Converter={StaticResource ThemeSummary}}" />
                             </StackPanel>
                         </DataTemplate>

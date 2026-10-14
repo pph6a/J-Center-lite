@@ -28,6 +28,7 @@ public sealed class ThemeThumbnail : Grid
     private readonly Image _image;
     private readonly FontIcon _placeholder;
     private readonly TextBlock _textPreview;
+    private ThemeDefinition? _subscribedTheme;
     private int _generation;
 
     public ThemeThumbnail()
@@ -71,6 +72,7 @@ public sealed class ThemeThumbnail : Grid
         Children.Add(_frame);
         SizeChanged += OnSizeChanged;
         Unloaded += OnUnloaded;
+        Loaded += OnLoaded;
     }
 
     public ThemeDefinition? Theme
@@ -81,9 +83,40 @@ public sealed class ThemeThumbnail : Grid
 
     private static void OnThemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is ThemeThumbnail thumbnail)
+        if (d is not ThemeThumbnail thumbnail)
         {
-            thumbnail.Update();
+            return;
+        }
+
+        thumbnail.Subscribe(thumbnail.Theme);
+        thumbnail.Update();
+    }
+
+    /// <summary>Reloads the tile when the theme's background changes in the editor.</summary>
+    private void OnThemePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(ThemeDefinition.BackgroundFile) or nameof(ThemeDefinition.ThumbnailFile))
+        {
+            Update();
+        }
+    }
+
+    private void Subscribe(ThemeDefinition? theme)
+    {
+        if (ReferenceEquals(_subscribedTheme, theme))
+        {
+            return;
+        }
+
+        if (_subscribedTheme is not null)
+        {
+            _subscribedTheme.PropertyChanged -= OnThemePropertyChanged;
+        }
+
+        _subscribedTheme = theme;
+        if (theme is not null)
+        {
+            theme.PropertyChanged += OnThemePropertyChanged;
         }
     }
 
@@ -157,10 +190,13 @@ public sealed class ThemeThumbnail : Grid
         }
     }
 
+    private void OnLoaded(object sender, RoutedEventArgs e) => Subscribe(Theme);
+
     private void OnUnloaded(object sender, RoutedEventArgs e)
     {
         // Invalidate any in-flight load so a recycled list item cannot paint stale media.
         _generation++;
+        Subscribe(null);
     }
 
     private static string FirstLabel(ThemeDefinition? theme)

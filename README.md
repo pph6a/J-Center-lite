@@ -65,6 +65,11 @@ dotnet run --project tools/JCenterThemeMigrator/JCenterThemeMigrator.csproj -c R
 
 会导入 8 个内置主题预览、空白主题、你的自定义媒体主题（MP4/GIF）以及 `Theme\*.xml` 布局主题，输出到 `%LOCALAPPDATA%\JCenterLite`。不修改原安装目录，也不把厂商素材写进仓库。详见 [docs/theme-migration.md](docs/theme-migration.md)。
 
+## 设备支持
+
+本项目的实测设备是 **乔思伯 JONSBO TF2-360SC(WI)** 一体式水冷（480×480 IPS 屏，屏内 QiaoSiBo 模组），在 7950X / X670E-A / RTX 4060 Ti 平台上完成了完整实测。
+支持矩阵、固件限制（比如为什么无法截屏回读画面）与测试机配置见 [docs/device-support.md](docs/device-support.md)。
+
 ## 与原程序的关系
 
 | 原程序 | 本项目 |

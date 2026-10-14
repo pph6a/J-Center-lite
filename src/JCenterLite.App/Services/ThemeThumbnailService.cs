@@ -35,6 +35,18 @@ public static class ThemeThumbnailService
         return Cache.GetOrAdd(key, _ => ResolveAsync(theme));
     }
 
+    /// <summary>Drops the cached resolution for a theme, e.g. after its background changed.</summary>
+    public static void Invalidate(ThemeDefinition? theme)
+    {
+        if (theme is null)
+        {
+            return;
+        }
+
+        var key = string.IsNullOrWhiteSpace(theme.Id) ? "path:" + theme.BackgroundFile : "id:" + theme.Id;
+        Cache.TryRemove(key, out _);
+    }
+
     private static async Task<string?> ResolveAsync(ThemeDefinition theme)
     {
         try

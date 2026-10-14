@@ -3,21 +3,41 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:JCenterLite.App.Controls"
+    xmlns:converters="using:JCenterLite.App.Converters"
     xmlns:models="using:JCenterLite.Core.Models">
-    <Grid Padding="24" ColumnSpacing="16">
+    <Page.Resources>
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibility" />
+        <converters:StringToBrushConverter x:Key="StringToBrush" />
+        <converters:ElementKindLabelConverter x:Key="KindLabel" />
+    </Page.Resources>
+    <Grid Padding="16" ColumnSpacing="16">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260" />
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="300" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Spacing="12">
-            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="主题" />
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <Button Command="{x:Bind ViewModel.AddThemeCommand}" Content="新建主题" />
-                <Button Command="{x:Bind ViewModel.DeleteThemeCommand}" Content="删除" />
+        <Grid Grid.Column="0" RowSpacing="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="3*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="主题" />
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8">
+                <Button Command="{x:Bind ViewModel.AddThemeCommand}" Content="新建" />
+                <Button Command="{x:Bind ViewModel.DuplicateThemeCommand}" Content="复制" />
+                <Button Click="DeleteTheme_Click" Content="删除" />
             </StackPanel>
-            <ListView ItemsSource="{x:Bind ViewModel.Themes}" SelectedItem="{x:Bind ViewModel.SelectedTheme, Mode=TwoWay}" SelectionMode="Single">
+            <ListView
+                Grid.Row="2"
+                ItemsSource="{x:Bind ViewModel.Themes}"
+                SelectedItem="{x:Bind ViewModel.SelectedTheme, Mode=TwoWay}"
+                SelectionMode="Single">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:ThemeDefinition">
                         <Grid Padding="4" ColumnSpacing="8">
@@ -25,52 +45,113 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <controls:ThemeThumbnail Width="40" Height="40" VerticalAlignment="Center" Theme="{x:Bind}" />
+                            <controls:ThemeThumbnail Width="36" Height="36" VerticalAlignment="Center" Theme="{x:Bind}" />
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="{x:Bind Name, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
                                 <TextBlock FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Elements.Count}" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="元素" />
-            <ComboBox ItemsSource="{x:Bind ViewModel.ElementKinds}" SelectedItem="{x:Bind ViewModel.NewElementKind, Mode=TwoWay}" />
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <Button Command="{x:Bind ViewModel.AddElementCommand}" Content="添加元素" />
-                <Button Command="{x:Bind ViewModel.DeleteElementCommand}" Content="删除元素" />
-            </StackPanel>
-            <ListView ItemsSource="{x:Bind ViewModel.SelectedTheme.Elements, Mode=OneWay}" SelectedItem="{x:Bind ViewModel.SelectedElement, Mode=TwoWay}" SelectionMode="Single">
+
+            <TextBlock Grid.Row="3" Style="{StaticResource SubtitleTextBlockStyle}" Text="元素" />
+            <Grid Grid.Row="4" ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ComboBox
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{x:Bind ViewModel.ElementKinds}"
+                    SelectedItem="{x:Bind ViewModel.NewElementKind, Mode=TwoWay}" />
+                <Button Grid.Column="1" Command="{x:Bind ViewModel.AddElementCommand}" Content="添加" />
+            </Grid>
+            <ListView
+                Grid.Row="5"
+                ItemsSource="{x:Bind ViewModel.SelectedTheme.Elements, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedElement, Mode=TwoWay}"
+                SelectionMode="Single">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:ThemeElementModel">
-                        <TextBlock Padding="4" Text="{x:Bind Kind}" />
+                        <Grid Padding="4" ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border Width="4" CornerRadius="2" Background="{x:Bind Color, Mode=OneWay, Converter={StaticResource StringToBrush}}" />
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="{x:Bind Kind, Mode=OneWay, Converter={StaticResource KindLabel}}" TextTrimming="CharacterEllipsis" />
+                                <TextBlock FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Text, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </StackPanel>
+        </Grid>
 
-        <StackPanel Grid.Column="1" Spacing="12" HorizontalAlignment="Center">
+        <StackPanel Grid.Column="1" Spacing="12">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="480 × 480 预览" />
-            <Border BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8">
+            <Border
+                HorizontalAlignment="Center"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
                 <controls:ThemeCanvas x:Name="Canvas" Theme="{x:Bind ViewModel.SelectedTheme, Mode=OneWay}" />
             </Border>
-            <StackPanel Orientation="Horizontal" Spacing="8">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
                 <Button Command="{x:Bind ViewModel.SaveCommand}" Content="保存主题库" />
                 <Button Click="ApplyTheme_Click" Content="应用到副屏" />
                 <Button Click="PickBackground_Click" Content="选择背景" />
+                <Button Click="ClearBackground_Click" Content="清除背景" />
             </StackPanel>
-            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" />
+            <TextBlock
+                HorizontalAlignment="Center"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}"
+                TextWrapping="Wrap" />
         </StackPanel>
 
-        <StackPanel Grid.Column="2" Spacing="12">
-            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="元素属性" />
-            <TextBox Header="显示文本" Text="{x:Bind ViewModel.SelectedElement.Text, Mode=TwoWay}" />
-            <TextBox Header="单位" Text="{x:Bind ViewModel.SelectedElement.Unit, Mode=TwoWay}" />
-            <NumberBox Header="字号" Maximum="160" Minimum="8" Value="{x:Bind ViewModel.SelectedElement.FontSize, Mode=TwoWay}" />
-            <NumberBox Header="缩放" Maximum="8" Minimum="0.2" SmallChange="0.1" SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.SelectedElement.Scale, Mode=TwoWay}" />
-            <NumberBox Header="旋转角度" Maximum="360" Minimum="0" Value="{x:Bind ViewModel.SelectedElement.Rotation, Mode=TwoWay}" />
-            <ColorPicker x:Name="ElementColor" ColorChanged="ElementColor_ColorChanged" IsAlphaEnabled="True" />
-            <Button Click="RefreshPreview_Click" Content="刷新预览" />
-        </StackPanel>
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="10">
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="主题属性" />
+                <TextBox
+                    Header="名称"
+                    IsEnabled="{x:Bind ViewModel.HasSelectedTheme, Mode=OneWay}"
+                    Text="{x:Bind ViewModel.SelectedTheme.Name, Mode=TwoWay}" />
+
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="元素属性" />
+                <TextBlock
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Text="未选中元素"
+                    Visibility="{x:Bind ViewModel.HasSelectedElement, Mode=OneWay, Converter={StaticResource InverseBoolToVisibility}}" />
+                <ContentControl IsEnabled="{x:Bind ViewModel.HasSelectedElement, Mode=OneWay}">
+                    <StackPanel Spacing="10">
+                <ComboBox HorizontalAlignment="Stretch" Header="类型" ItemsSource="{x:Bind ViewModel.ElementKinds}" SelectedIndex="{x:Bind ViewModel.SelectedElementKindIndex, Mode=TwoWay}" />
+                <TextBox Header="显示文本" Text="{x:Bind ViewModel.SelectedElement.Text, Mode=TwoWay}" />
+                <TextBox Header="单位" Text="{x:Bind ViewModel.SelectedElement.Unit, Mode=TwoWay}" />
+                <NumberBox Header="字号" Maximum="200" Minimum="8" SmallChange="2" SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.SelectedElement.FontSize, Mode=TwoWay}" />
+                <NumberBox Header="缩放" Maximum="8" Minimum="0.2" SmallChange="0.1" SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.SelectedElement.Scale, Mode=TwoWay}" />
+                <NumberBox Header="旋转角度" Maximum="360" Minimum="-360" SmallChange="5" SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.SelectedElement.Rotation, Mode=TwoWay}" />
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <NumberBox Header="X" Maximum="480" Minimum="0" SmallChange="4" SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.SelectedElement.X, Mode=TwoWay}" />
+                    <NumberBox Grid.Column="1" Header="Y" Maximum="480" Minimum="0" SmallChange="4" SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.SelectedElement.Y, Mode=TwoWay}" />
+                </Grid>
+                    <ColorPicker x:Name="ElementColor" ColorChanged="ElementColor_ColorChanged" IsAlphaEnabled="True" />
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Command="{x:Bind ViewModel.RaiseElementCommand}" Content="上移" />
+                    <Button Command="{x:Bind ViewModel.LowerElementCommand}" Content="下移" />
+                    <Button Command="{x:Bind ViewModel.DuplicateElementCommand}" Content="复制" />
+                    <Button Command="{x:Bind ViewModel.DeleteElementCommand}" Content="删除" />
+                </StackPanel>
+                </StackPanel>
+                </ContentControl>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
