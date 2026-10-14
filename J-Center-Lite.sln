@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{99F3D37C-F269-4CD6-8ED4-FE23CE7C74F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCenterLite.Core", "src\JCenterLite.Core\JCenterLite.Core.csproj", "{53525A38-E226-4633-A54D-A5A966265B5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCenterLite.App", "src\JCenterLite.App\JCenterLite.App.csproj", "{55FA08B3-98ED-4337-97D9-6ACDB69BA6D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{86C62523-2006-4D49-9A56-988D98645EFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCenterLite.Core.Tests", "tests\JCenterLite.Core.Tests\JCenterLite.Core.Tests.csproj", "{D8E71BEB-B28A-4AB1-81D7-CE491D9FE522}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{E88132E0-CA67-40A9-9F65-970814B1A6ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCenterThemeMigrator", "tools\JCenterThemeMigrator\JCenterThemeMigrator.csproj", "{3E706156-933A-426A-8F98-E981C4C4F0B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53525A38-E226-4633-A54D-A5A966265B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53525A38-E226-4633-A54D-A5A966265B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53525A38-E226-4633-A54D-A5A966265B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53525A38-E226-4633-A54D-A5A966265B5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55FA08B3-98ED-4337-97D9-6ACDB69BA6D2}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{55FA08B3-98ED-4337-97D9-6ACDB69BA6D2}.Debug|Any CPU.Build.0 = Debug|x64
+		{55FA08B3-98ED-4337-97D9-6ACDB69BA6D2}.Release|Any CPU.ActiveCfg = Release|x64
+		{55FA08B3-98ED-4337-97D9-6ACDB69BA6D2}.Release|Any CPU.Build.0 = Release|x64
+		{D8E71BEB-B28A-4AB1-81D7-CE491D9FE522}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E71BEB-B28A-4AB1-81D7-CE491D9FE522}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E71BEB-B28A-4AB1-81D7-CE491D9FE522}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E71BEB-B28A-4AB1-81D7-CE491D9FE522}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E706156-933A-426A-8F98-E981C4C4F0B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E706156-933A-426A-8F98-E981C4C4F0B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E706156-933A-426A-8F98-E981C4C4F0B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E706156-933A-426A-8F98-E981C4C4F0B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{53525A38-E226-4633-A54D-A5A966265B5B} = {99F3D37C-F269-4CD6-8ED4-FE23CE7C74F3}
+		{55FA08B3-98ED-4337-97D9-6ACDB69BA6D2} = {99F3D37C-F269-4CD6-8ED4-FE23CE7C74F3}
+		{D8E71BEB-B28A-4AB1-81D7-CE491D9FE522} = {86C62523-2006-4D49-9A56-988D98645EFE}
+		{3E706156-933A-426A-8F98-E981C4C4F0B3} = {E88132E0-CA67-40A9-9F65-970814B1A6ED}
+	EndGlobalSection
+EndGlobal

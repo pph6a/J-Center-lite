@@ -1,0 +1,29 @@
+name: ci
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore J-Center-Lite.sln
+      - name: Build
+        run: dotnet build src/JCenterLite.App/JCenterLite.App.csproj -c Release -p:Platform=x64 --no-restore
+      - name: Test
+        run: dotnet test tests/JCenterLite.Core.Tests/JCenterLite.Core.Tests.csproj -c Release
+      - name: Publish
+        run: dotnet publish src/JCenterLite.App/JCenterLite.App.csproj -c Release -r win-x64 -p:Platform=x64 -p:WindowsAppSDKSelfContained=true -p:WindowsPackageType=None -o dist/win-x64 --no-restore
+      - uses: actions/upload-artifact@v4
+        with:
+          name: J-Center-Lite-win-x64
+          path: dist/win-x64
+          if-no-files-found: error
