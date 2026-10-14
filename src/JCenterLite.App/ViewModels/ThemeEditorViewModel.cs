@@ -125,7 +125,7 @@ public sealed partial class ThemeEditorViewModel : ObservableObject
             ThumbnailFile = SelectedTheme.ThumbnailFile,
             BackgroundIsVideo = SelectedTheme.BackgroundIsVideo,
             BackgroundColor = SelectedTheme.BackgroundColor,
-            Elements = SelectedTheme.Elements.Select(element => element.Clone()).ToList(),
+            Elements = new ObservableCollection<ThemeElementModel>(SelectedTheme.Elements.Select(element => element.Clone())),
         };
 
         Themes.Add(copy);

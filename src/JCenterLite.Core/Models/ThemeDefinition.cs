@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 
 namespace JCenterLite.Core.Models;
@@ -193,7 +194,11 @@ public sealed class ThemeDefinition : INotifyPropertyChanged
         set => Set(ref _backgroundColor, value);
     }
 
-    public List<ThemeElementModel> Elements { get; set; } = new();
+    /// <summary>
+    /// Observable so the editor list tracks add/remove immediately instead of keeping a
+    /// stale snapshot of the theme it was opened with.
+    /// </summary>
+    public ObservableCollection<ThemeElementModel> Elements { get; set; } = new();
 
     public DateTimeOffset UpdatedAt
     {

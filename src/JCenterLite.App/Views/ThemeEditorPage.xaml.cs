@@ -52,7 +52,31 @@ public sealed partial class ThemeEditorPage : Page
         Canvas.ReleaseBackgroundPlayer();
     }
 
-    private void OnThemeChanged(object? sender, ThemeDefinition theme) => Canvas.Refresh();
+    private void OnThemeChanged(object? sender, ThemeDefinition theme)
+    {
+        Canvas.Refresh();
+
+        // Let the element list pick up the new item first, then bring it into view.
+        DispatcherQueue.TryEnqueue(ScrollSelectedElementIntoView);
+    }
+
+    private void ScrollSelectedElementIntoView()
+    {
+        var element = ViewModel.SelectedElement;
+        if (element is null)
+        {
+            return;
+        }
+
+        try
+        {
+            ElementList.ScrollIntoView(element);
+        }
+        catch
+        {
+            // Scrolling is cosmetic; never let it break the edit flow.
+        }
+    }
 
     private void OnElementChanged(object? sender, EventArgs e)
     {

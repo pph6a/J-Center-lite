@@ -69,6 +69,7 @@
             </Grid>
             <ListView
                 Grid.Row="5"
+                x:Name="ElementList"
                 ItemsSource="{x:Bind ViewModel.SelectedTheme.Elements, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedElement, Mode=TwoWay}"
                 SelectionMode="Single">

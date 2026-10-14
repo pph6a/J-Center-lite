@@ -36,5 +36,6 @@
 - 并发读取传感器加锁：遥测推送、硬件监控页与画面预览同时读取 LibreHardwareMonitor 不再互相干扰。
 - 主题元素/主题模型改为可通知（INotifyPropertyChanged），修正“选了另一个元素属性面板不刷新”和“改完属性要手点刷新预览”的问题；画布改为增量重绘，不重启视频。
 - 修正给 `StackPanel` 设置 `IsEnabled` 导致 XAML 编译失败的问题（WinUI 3 中 `IsEnabled` 只存在于 `Control`，现改用 `ContentControl` 包裹）。
+- 修正主题编辑器“添加/删除/复制元素后左侧元素列表不更新”的问题（`ThemeDefinition.Elements` 改为 `ObservableCollection`），新元素会自动滚动到可见处。
 - 修复切换主题时的闪退：预览不再每秒重建视频管线（低频传感器刷新只重绘文本），并把 `MediaPlayer` 的析构改成先脱离可视树再释放。
 - 修复高缩放（150%/200%）下页面被压扁：导航栏收窄到 248，设备控制区压缩为单卡片三行，主题墙改为 4 列紧凑缩略图，不再需要滚动才能看到按钮。

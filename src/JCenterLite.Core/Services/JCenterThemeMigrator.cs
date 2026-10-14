@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Collections.ObjectModel;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
@@ -224,7 +225,7 @@ public sealed class JCenterThemeMigrator
                     ThumbnailFile = backgroundFile,
                     BackgroundIsVideo = false,
                     BackgroundColor = "#FF0B1220",
-                    Elements = elements,
+                    Elements = new ObservableCollection<ThemeElementModel>(elements),
                     UpdatedAt = File.GetLastWriteTime(xmlPath),
                 });
             }
@@ -263,7 +264,7 @@ public sealed class JCenterThemeMigrator
                 ThumbnailFile = copied,
                 BackgroundIsVideo = Path.GetExtension(previewPath).Equals(".gif", StringComparison.OrdinalIgnoreCase),
                 BackgroundColor = "#FF0B1220",
-                Elements = CreateBuiltinElements(kinds),
+                Elements = new ObservableCollection<ThemeElementModel>(CreateBuiltinElements(kinds)),
                 UpdatedAt = File.GetLastWriteTime(previewPath),
             });
         }
@@ -273,7 +274,7 @@ public sealed class JCenterThemeMigrator
             Id = DeterministicId("builtin:blank"),
             Name = "JC · 空白主题",
             BackgroundColor = "#FF0B1220",
-            Elements = [],
+            Elements = new(),
         });
 
         return themes;
@@ -333,7 +334,7 @@ public sealed class JCenterThemeMigrator
             ThumbnailFile = thumbnail,
             BackgroundIsVideo = extension is ".mp4" or ".gif" or ".webm" or ".mov" or ".avi" or ".mkv",
             BackgroundColor = "#FF000000",
-            Elements = [],
+            Elements = new(),
             UpdatedAt = File.GetLastWriteTime(sourcePath),
         };
     }
