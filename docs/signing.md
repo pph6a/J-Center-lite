@@ -16,9 +16,9 @@ Windows 上没签名的 exe 会让每个用户看到 SmartScreen 的“未知发
 | 有描述功能的下载页 | ✅ README + `docs/device-support.md` |
 | 只签自己的项目/二进制，维护者拥有源码与构建脚本 | ✅ 仓库自有 |
 | 构建必须跑在 GitHub 托管的 runner 上 | ✅ 工作流全部 `runs-on: windows-latest` |
-| **仓库公开** | ⚠️ 当前仍是 private，申请前需转公开 |
+| **仓库公开** | ✅ 2026-10-14 已转 public |
 
-> 转公开：`gh repo edit pph6a/J-Center-lite --visibility public --accept-visibility-change-consequences`
+> 仓库已是公开状态：https://github.com/pph6a/J-Center-lite
 
 ## 2. 提交申请
 

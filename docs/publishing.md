@@ -6,7 +6,7 @@
 |---|---|
 | 远端 | `git@github.com:pph6a/J-Center-lite.git`（`origin`） |
 | 默认分支 | `main` |
-| 可见性 | **private**（要公开时再执行本文最后一节） |
+| 可见性 | **public**（2026-10-14 转公开） |
 | CI | `.github/workflows/ci.yml` — Windows runner：还原 → 构建 → 单测 → 发布并上传 artifact |
 | Release | `.github/workflows/release.yml` — 打 `v*` tag 时自动打包并创建 Release |
 | 签名 | `.github/workflows/sign-release.yml` — 审批后在 Actions 里手动触发，用 SignPath Foundation 证书签名 Release 产物（见 [signing.md](signing.md)） |
@@ -72,10 +72,17 @@
 - [ ] `CHANGELOG.md` 的版本号与 tag 一致
 - [ ] Release 里附了 zip 与 `.sha256`
 
-## 需要公开仓库时
+## 仓库可见性
+
+仓库已于 2026-10-14 转为 **public**，匿名可访问代码、Release 与校验文件：
+
+- https://github.com/pph6a/J-Center-lite
+- https://github.com/pph6a/J-Center-lite/releases/tag/v1.0.0
+
+历史扫描结论：无 token / 密钥 / cookie；仅在早期文档修订里出现过本机用户名（`C:\Users\7950X`，无凭据），当前版本已改为 `%USERPROFILE%`。
+
+如需重新转回私有（不推荐，公开后已可能被归档/引用）：
 
 ```powershell
-gh repo edit pph6a/J-Center-lite --visibility public --accept-visibility-change-consequences
+gh repo edit pph6a/J-Center-lite --visibility private --accept-visibility-change-consequences
 ```
-
-公开前请确认：历史提交里没有需要撤回的内容（当前提交只包含自研代码、文档与自绘截图）。
